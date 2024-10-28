@@ -10,12 +10,12 @@ function EditProductModal({ setEditProductModal, editId }) {
   const closeModalHandler = () => {setEditProductModal(null)};
   // -------------------------------------------------------------------------------------------------------------
   const [product, setProduct] = useState({ name: "", quantity: 0, price: 0, ids: [editId] })
-  console.log("editModal id:", product.ids);
   const {mutate} = useUpdate()
 
   // ------------------------------------------[edit product inputs]--------------------------------------------
 
     const editProductChangeHandler = (event) => {
+      
       setProduct((prevProduct) => ({ ...prevProduct, [event.target.name]: event.target.value }));}
 
   // ----------------------------------[edit product button]------------------------------------------------------

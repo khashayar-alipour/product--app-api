@@ -10,12 +10,15 @@ import {useState } from "react"
 import { useNavigate } from "react-router-dom"
 import SearchProducts from "./SearchProducts"
 import Pagination from "./Pagination"
+import ProfileModal from "./modals/ProfileModal"
 
 
 function HomePage() {
 
     // --------------------------------------------------------------------------------------------------
     const navigate = useNavigate();
+    // ----------------------------------------------[success/error alert]---------------------------------------------
+
     // ----------------------------------------------[pagination]---------------------------------------------
 
     const[page,setPage] = useState(1)
@@ -24,8 +27,10 @@ function HomePage() {
     
         const {data, error, isPending} = useGetAllProducts(page) 
         
-        console.log("home number of page: ", page);
     // ----------------------------------------------[Modals]---------------------------------------------
+
+    const[profile, setProfile]= useState(null)
+    const profileHandler = () => {setProfile(true)}
 
     const [deleteModal, setDeleteModal] = useState(null)
     const [deleteId, setDeleteId] = useState("")   
@@ -58,7 +63,7 @@ function HomePage() {
                     <p>Admin</p>
                     <h4 onClick={logoutHandler} >Logout</h4>
                 </div>
-                <span>👽</span>
+                <span onClick={profileHandler}>👽</span>
             </div>
             <div className={styles.search}>
                 <div className={styles.input}>
@@ -87,18 +92,16 @@ function HomePage() {
             <p></p>
         </div>
 
-        {/* {(isPending) && return {<p>Loading...</p>}}
-        {(error) && <p>Something went wrong: {error.message} </p>} */}
 
         {data && value === "" ? 
-        (<ul>{data?.data?.data?.map((data => ((<Products key={data?.id} data={data} editHandler={editHandler} deleteHandler={deleteHandler} setDeleteModal={setDeleteModal} setEditProductModal={setEditProductModal} error={error} isPending={isPending} />))))}</ul>) : 
-        value !== "" ? <SearchProducts value={value} data={data} /> : <p className={styles.noProductMessage}>No Products Yet!</p>}
+        (<ul>{data?.data?.data?.map((data => ((<Products key={data?.id} data={data} editHandler={editHandler} deleteHandler={deleteHandler} error={error} isPending={isPending} />))))}</ul>) : 
+        value !== "" ? <SearchProducts value={value} data={data} /> : <p className={styles.noProductMessage}>No Products!</p>}
 
 
         {!!newProductModal && <NewProductModal setNewProductModal={setNewProductModal}/>}
-        {/* {!!deleteModal && <DeleteModal data={data} setDeleteModal={setDeleteModal}/>} */}
-        {!!deleteModal &&  (<ul>{data.data.data.map(data => (<DeleteModal key={data.id} data={data} deleteId={deleteId} setDeleteModal={setDeleteModal}/>))}</ul>)}
-        {!!editProductModal &&  (<ul>{data.data.data.map(data => (<EditProductModal key={data.id} data={data} editId={editId} setEditProductModal={setEditProductModal}/>))}</ul>)}
+        {!!deleteModal && (<DeleteModal data={data}  deleteId={deleteId} setDeleteModal={setDeleteModal}/>) }
+        {!!editProductModal &&  (<EditProductModal data={data} editId={editId} setEditProductModal={setEditProductModal}/>)}
+        {!!profile && <ProfileModal setProfile={setProfile} />}
 
         <Pagination page={page} setPage={setPage} />
     </div>
@@ -106,6 +109,3 @@ function HomePage() {
 }
 
 export default HomePage
-
-// const filteredProduct = Object.values(data).filter((product) => ( (product.name.toLowerCase().includes(value)) ))
-

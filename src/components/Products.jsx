@@ -1,8 +1,6 @@
 import styles from "./Products.module.css"
 
-function Products({setDeleteModal, setEditProductModal, data, error, isPending, deleteHandler, editHandler}) {
-
-  const {name, price, quantity, id} = data
+function Products({ data, error, isPending, deleteHandler, editHandler}) {
 
 //-----------------------------------------------------------------
   return (

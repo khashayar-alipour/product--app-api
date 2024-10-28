@@ -1,7 +1,7 @@
 import { useDelete } from "../../services/mutations"
 import styles from "./DeleteModal.module.css"
 
-function DeleteModal({setDeleteModal, data, deleteId}) {
+function DeleteModal({setDeleteModal, deleteId}) {
 
     const closeModalHandler = () => {setDeleteModal(null)}
     // -------------------------------------------------------------------------------------------------------------
@@ -11,8 +11,8 @@ function DeleteModal({setDeleteModal, data, deleteId}) {
       const data = {ids: [deleteId]}
       
     mutate({data}, {
-        onSuccess: (data) => {console.log(data.data); closeModalHandler(null) },
-        onError: (error) => (alert(error.response.data.message)) 
+        onSuccess: (data) => {console.log(data.data) ;alert("Contact deleted successfuly!") ; closeModalHandler(null) },
+        onError: (error) => {alert(error.response.data.message); } 
       })
     }
 
