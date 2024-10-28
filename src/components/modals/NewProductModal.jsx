@@ -1,6 +1,7 @@
 import styles from "./NewProductModal.module.css"
-import { useState } from "react";
 import { usePost } from "../../services/mutations"
+
+import { useState } from "react";
 
 function NewProductModal({ setNewProductModal }) {
 
@@ -19,8 +20,11 @@ function NewProductModal({ setNewProductModal }) {
     const productAddHandler = (event) => {
         event.preventDefault();
 
+        const{name, price} = product
+        if (!name || !price) return alert("Fill in name and price!")
+ 
         mutate(product, {
-            onSuccess: (data) => {console.log(data.data); setNewProductModal(null); alert("New product added successfuly!")},
+            onSuccess: (data) => {console.log(data.data); setNewProductModal(null); alert("New product added successfuly!"); },
             onError: (error) => (console.log(error.response.data.message)) 
           })
     }

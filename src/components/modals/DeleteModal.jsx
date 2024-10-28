@@ -1,17 +1,17 @@
 import { useDelete } from "../../services/mutations"
 import styles from "./DeleteModal.module.css"
 
-function DeleteModal({setDeleteModal, data}) {
+function DeleteModal({setDeleteModal, data, deleteId}) {
 
     const closeModalHandler = () => {setDeleteModal(null)}
     // -------------------------------------------------------------------------------------------------------------
-    const {mutate} = useDelete(data.id)
+    const {mutate} = useDelete()
     // ------------------------------------------[delete product button]--------------------------------------------
-    const deleteProductHandler = (event) => {
-      event.preventDefault();
-    
-    mutate(data, {
-        onSuccess: (data) => {console.log(data.data); closeModalHandler(null); alert("product deleted successfuly!")},
+    const deleteProductHandler = () => {
+      const data = {ids: [deleteId]}
+      
+    mutate({data}, {
+        onSuccess: (data) => {console.log(data.data); closeModalHandler(null) },
         onError: (error) => (alert(error.response.data.message)) 
       })
     }

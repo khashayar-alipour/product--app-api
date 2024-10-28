@@ -4,11 +4,10 @@ import DeleteModal from "./modals/DeleteModal"
 import NewProductModal from "./modals/NewProductModal"
 import EditProductModal from "./modals/EditProductModal"
 import Products from "./Products"
-import api from "../configs/api"
+import {useGetAllProducts} from "../services/queries"
 
 import {useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
 import SearchProducts from "./SearchProducts"
 import Pagination from "./Pagination"
 
@@ -23,13 +22,18 @@ function HomePage() {
 
     // ---------------------------------[add new product query]------------------------------------------
     
-        const queryFn = (data) => {return api.get(`products?page=${page}&limit=10`, data)};
-        const queryKey = ["products"];
-        const {isLoading, data, isFetching} = useQuery({queryKey, queryFn});      
-
+        const {data, error, isPending} = useGetAllProducts(page) 
+        
+        console.log("home number of page: ", page);
     // ----------------------------------------------[Modals]---------------------------------------------
 
     const [deleteModal, setDeleteModal] = useState(null)
+    const [deleteId, setDeleteId] = useState("")   
+    const [editId, setEditId] = useState("")
+    const deleteHandler = (id) => {setDeleteModal(true); setDeleteId(id); console.log(deleteId);}
+    const editHandler = (id) => {setEditProductModal(true); setEditId(id); console.log(editId);}
+
+
     const[newProductModal, setNewProductModal] = useState(null)
     const[editProductModal, setEditProductModal] = useState(null)
     
@@ -83,15 +87,18 @@ function HomePage() {
             <p></p>
         </div>
 
+        {/* {(isPending) && return {<p>Loading...</p>}}
+        {(error) && <p>Something went wrong: {error.message} </p>} */}
+
         {data && value === "" ? 
-        (<ul>{data.data.data.map((data => ((<Products key={data.id} data={data} setDeleteModal={setDeleteModal} setEditProductModal={setEditProductModal} />))))}</ul>) : 
+        (<ul>{data?.data?.data?.map((data => ((<Products key={data?.id} data={data} editHandler={editHandler} deleteHandler={deleteHandler} setDeleteModal={setDeleteModal} setEditProductModal={setEditProductModal} error={error} isPending={isPending} />))))}</ul>) : 
         value !== "" ? <SearchProducts value={value} data={data} /> : <p className={styles.noProductMessage}>No Products Yet!</p>}
 
 
         {!!newProductModal && <NewProductModal setNewProductModal={setNewProductModal}/>}
         {/* {!!deleteModal && <DeleteModal data={data} setDeleteModal={setDeleteModal}/>} */}
-        {!!deleteModal &&  (<ul>{data.data.data.map(data => (<DeleteModal key={data.id} data={data} setDeleteModal={setDeleteModal}/>))}</ul>)}
-        {!!editProductModal &&  (<ul>{data.data.data.map(data => (<EditProductModal key={data.id} data={data} setEditProductModal={setEditProductModal}/>))}</ul>)}
+        {!!deleteModal &&  (<ul>{data.data.data.map(data => (<DeleteModal key={data.id} data={data} deleteId={deleteId} setDeleteModal={setDeleteModal}/>))}</ul>)}
+        {!!editProductModal &&  (<ul>{data.data.data.map(data => (<EditProductModal key={data.id} data={data} editId={editId} setEditProductModal={setEditProductModal}/>))}</ul>)}
 
         <Pagination page={page} setPage={setPage} />
     </div>

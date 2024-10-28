@@ -2,8 +2,8 @@ import styles from "./Pagination.module.css"
 
 function Pagination({ page, setPage }) {
 
-    const previousHandler = () => { if (page <= 1) return; setPage((page) => page - 1);};
-    const nextHandler = () => { if (page >= 100) return; setPage((page) => page + 1); console.log("page: ",page); };
+    const previousHandler = () => { if (page <= 1) return; setPage((page) => page - 1); console.log("pagination page: " ,page);  };
+    const nextHandler = () => { if (page >= 100) return; setPage((page) => page + 1); console.log("pagination page: ",page);};
   
     return (
       <div className={styles.pagination}>

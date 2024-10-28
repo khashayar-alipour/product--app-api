@@ -19,6 +19,10 @@
     cursor: pointer;
 }
 
+.pagination button:active {
+    background-color: #8dadf6;
+}
+
 .pagination p {
     border: 1px solid #3874ff;
     width: 25px;

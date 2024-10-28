@@ -88,12 +88,19 @@ body {
 .admin h4 {
     font-size: 1rem;
     margin: 0 10px 0 20px ;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    padding: 1px;
     color: #5497f4;
+    border-radius: 4px;
+    background-color: #eae6e6;
 }
 .admin h4:hover {
     cursor: pointer;
 }
+.admin h4:active{
+    background-color: #c7c6c6;
+}
+
 .admin span {
     font-size: 2.2rem;
     margin-right: 10px;
@@ -128,7 +135,7 @@ body {
 
 .topOfTable button {
     margin: 5px;
-    background-color: #55A3F0;
+    background-color: #1986f3;
     color: #FFFFFF;
     padding: 5px;
     border-radius: 10px;
@@ -136,6 +143,9 @@ body {
     height: 45px;
     font-size: 1.2rem;
     cursor: pointer;
+}
+.topOfTable button:active {
+    background-color: #6daff1 ;
 }
 
 /* ----------------------------------------------- */
